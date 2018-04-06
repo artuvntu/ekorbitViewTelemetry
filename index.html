@@ -3,22 +3,132 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <meta name="description" content="Affordable and professional web design">
-	  <meta name="keywords" content="web design, affordable web design, professional web design">
-  	<meta name="author" content="Brad Traversy">
-    <title>Acme Web Deisgn | Welcome</title>
+    <meta name="description" content="EkOrbit Telemetry view">
+    <meta name="author" content="EkOrbit">
+    <title>EkOrbit Telemetry</title>
     <link rel="stylesheet" href="./css/style.css">
+<script>
+        function initMap() {
+        var uluru = {lat: -25.363, lng: 131.044};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+window.onload = function () {
+var puntosGiroscopioX = [];
+var puntosGiroscopioY = [];
+var puntosGiroscopioZ = [];
+var puntosMagnetometroX = [];
+var puntosMagnetometroY = [];
+var puntosMagnetometroZ = [];
+
+var tablaGyro = new CanvasJS.Chart("contenedorTablaGyro" , {
+  title :{
+    text: "Gyro",
+  },
+  axisY: {
+    includeZero : false
+  },
+  data: [{
+    type: "line",
+    dataPoints: puntosGiroscopioX
+  },{
+    type: "line",
+    dataPoints: puntosGiroscopioY
+  },{
+    type: "line",
+    dataPoints: puntosGiroscopioZ
+  }]
+});
+var tablaMagnetometro = new CanvasJS.Chart("contenedorTablaMagnetometro",{
+  backgroundColor: "#F5DEB3",
+  title :{
+    text: "Magnetometer",
+  },
+  axisY: {
+    includeZero : false
+  },
+  data: [{
+    type: "line",
+    dataPoints: puntosMagnetometroX
+  },{
+    type: "line",
+    dataPoints: puntosMagnetometroY
+  },{
+    type: "line",
+    dataPoints: puntosMagnetometroZ
+  }]
+});
+var valorX = 0;
+var valorY = 100;
+var tiempoIntervalo = 100;
+var cantidadDatos = 20;
+var actualizarTabla = function () {
+  valorY = valorY + Math.round(5 + Math.random() * (-10));
+  puntosGiroscopioX.push({
+    x: valorX,
+    y: valorY
+  });
+  valorY = valorY + Math.round(5 + Math.random() * (-10));
+  puntosGiroscopioY.push({
+    x: valorX,
+    y: valorY
+  });
+  valorY = valorY + Math.round(5 + Math.random() * (-10));
+  puntosGiroscopioZ.push({
+    x: valorX,
+    y: valorY
+  });
+
+  valorY = valorY + Math.round(5 + Math.random() * (-10));
+  puntosMagnetometroX.push({
+    x: valorX,
+    y: valorY
+  });
+  valorY = valorY + Math.round(5 + Math.random() * (-10));
+  puntosMagnetometroY.push({
+    x: valorX,
+    y: valorY
+  });
+  valorY = valorY + Math.round(5 + Math.random() * (-10));
+  puntosMagnetometroZ.push({
+    x: valorX,
+    y: valorY
+  });
+  valorX++;
+  if (puntosGiroscopioX.length > cantidadDatos){
+    puntosGiroscopioX.shift();
+    puntosGiroscopioY.shift();
+    puntosGiroscopioZ.shift();
+
+    puntosMagnetometroX.shift();
+    puntosMagnetometroY.shift();
+    puntosMagnetometroZ.shift();
+  }
+  tablaGyro.render();
+  tablaMagnetometro.render();
+};
+actualizarTabla(cantidadDatos);
+setInterval(function(){actualizarTabla(cantidadDatos)}, tiempoIntervalo);
+
+}
+</script>
   </head>
   <body>
     <header>
       <div class="container">
         <div id="branding">
-          <h1><span class="highlight">Acme</span> Web Design</h1>
+          <img class="imagenLogo" src="./img/EkOrbitLogo.png">
         </div>
         <nav>
           <ul>
             <li class="current"><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="tableTest.html">Table</a></li>
             <li><a href="services.html">Services</a></li>
           </ul>
         </nav>
@@ -27,16 +137,27 @@
 
     <section id="showcase">
       <div class="container">
-        <h1>Affordable Professional Web Design</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu luctus ipsum, rhoncus semper magna. Nulla nec magna sit amet sem interdum condimentum.</p>
+        <h1>Telemetry View</h1>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqYQwm-I1PQmpDh0Dc7G5WF2lz_y0yOFg&callback=initMap"></script>
+                <div id = "video" style="height: 300px; width: 30%;display: inline-block;">
+          <video width="100%" height="100%" controls>
+            <source src="./img/videoStream.m4v" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div id="contenedorTablaGyro" style="height: 300px; width: 30%; display: inline-block;"></div>
+        <div id="contenedorTablaMagnetometro" style="height: 300px; width: 30%;display: inline-block;"></div>
+        <div id="map" style="height: 300px; width: 70%;display: inline-block;"></div>
+
       </div>
     </section>
-
+<!-- 
     <section id="newsletter">
       <div class="container">
         <h1>Subscribe To Our Newsletter</h1>
         <form>
-          <input type="email" placeholder="Enter Email...">
+          <input type="email" placeholder="Enter Name...">
           <button type="submit" class="button_1">Subscribe</button>
         </form>
       </div>
@@ -61,9 +182,9 @@
         </div>
       </div>
     </section>
-
+ -->
     <footer>
-      <p>Acme Web Deisgn, Copyright &copy; 2017</p>
+      <p>EkOrbit, Copyright &copy; 2018</p>
     </footer>
   </body>
 </html>
