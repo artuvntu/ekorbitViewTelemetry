@@ -8,17 +8,31 @@
     <title>EkOrbit Telemetry</title>
     <link rel="stylesheet" href="./css/style.css">
 <script>
-        function initMap() {
-        var uluru = {lat: -25.363, lng: 131.044};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
-      }
+var recorridoBlimp;
+function initMap() {
+  var la = 19.328025;
+  var lo = -99.181082;
+  var ciudadUniversitaria = {lat: la,lng: lo };
+  var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 9,
+      center: ciudadUniversitaria
+  });
+  var puntosBlimp = [];
+  for (var i = 0;i < 4 ;i++){
+    puntosBlimp.push({
+    lat: la + Math.random() ,
+    lng: lo + Math.random()
+    });
+  }
+  recorridoBlimp = new google.maps.Polyline({
+      path: puntosBlimp,
+      geodesic: true,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2
+    });
+    recorridoBlimp.setMap(map);
+}
 window.onload = function () {
 var puntosGiroscopioX = [];
 var puntosGiroscopioY = [];
@@ -115,7 +129,10 @@ var actualizarTabla = function () {
 };
 actualizarTabla(cantidadDatos);
 setInterval(function(){actualizarTabla(cantidadDatos)}, tiempoIntervalo);
-
+  var path  = recorridoBlimp.getPath();
+    var la = 19.328025;
+  var lo = -99.181082;
+  path.push(google.maps.LatLng({lat: 41.879, lng: -87.624}));
 }
 </script>
   </head>
